@@ -1,0 +1,19 @@
+### Create a new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "noahjohnyoung@gmail.com",
+  "password": "Password1",
+  "name": "Test"
+}
+
+### Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "noahjohnyoung@gmail.com",
+  "password": "Password1"
+}
+

@@ -1,0 +1,12 @@
+### Get all users
+GET http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "email": "noahjohnyoung@gmail.com",
+  "password": "Password1",
+  "name": "Test"
+}
+
+
+
