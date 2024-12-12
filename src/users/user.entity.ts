@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')

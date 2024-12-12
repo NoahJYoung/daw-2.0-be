@@ -56,9 +56,12 @@ export class AuthService {
 
   async refreshAccessToken(refreshToken: string) {
     try {
-      const payload = this.jwtService.verify(refreshToken);
+      const { sub } = this.jwtService.verify(refreshToken);
 
-      const user = await this.usersService.findById(payload.sub);
+      const user = await this.usersService.findById(sub);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
 
       const newAccessToken = this.jwtService.sign(
         { sub: user.id, email: user.email },

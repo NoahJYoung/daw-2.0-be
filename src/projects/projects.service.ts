@@ -3,27 +3,39 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Project } from './project.entity';
 import { User } from '../users/user.entity';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectRepository(Project)
     private projectsRepository: Repository<Project>,
+    private readonly storageService: StorageService,
   ) {}
 
   async createProject(
     name: string,
-    storagePath: string,
-    collaborators: string[] | null,
     owner: User,
-  ): Promise<Project> {
+    collaborators?: string[] | null,
+  ): Promise<{ project: Project; uploadUrl: string }> {
     const project = this.projectsRepository.create({
       name,
-      storagePath,
-      collaborators,
       owner,
+      collaborators,
     });
-    return this.projectsRepository.save(project);
+    const savedProject = await this.projectsRepository.save(project);
+
+    const storagePath = `${owner.id}/${savedProject.id}.zip`;
+
+    savedProject.storagePath = storagePath;
+    await this.projectsRepository.save(savedProject);
+
+    const uploadUrl = await this.storageService.generateUploadPresignedUrl(
+      owner.id,
+      savedProject.id,
+    );
+
+    return { project: savedProject, uploadUrl };
   }
 
   async getUserProjects(ownerId: string): Promise<Project[]> {

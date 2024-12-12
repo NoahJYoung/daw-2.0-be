@@ -1,0 +1,3 @@
+### Get Reverbs
+GET http://localhost:3000/storage/common-resource?filePath=reverbs/reverbs.zip
+Content-Type: application/json

@@ -8,5 +8,10 @@ Content-Type: application/json
   "name": "Test"
 }
 
+### Get current suer
+GET http://localhost:3000/users/me
+Content-Type: application/json
+
+
 
 
